@@ -5,6 +5,7 @@ import com.ivoronline.springboot_db_query_jpql.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,53 +18,75 @@ public class MyController {
   @Autowired PersonRepository personRepository;
 
   //================================================================
-  // GET JOHN
+  // SELECT JOHN
   //================================================================
   @ResponseBody
-  @RequestMapping("/GetJohn")
-  public Person getJohn() {
-    Person john = personRepository.getJohn();
+  @RequestMapping("/SelectJohn")
+  public Person selectJohn() {
+    Person john = personRepository.selectJohn();
     return john;
   }
 
   //================================================================
-  // GET PERSON BY NAME AGE INDEXED
+  // SELECT PERSON BY NAME AGE INDEXED
   //================================================================
   @ResponseBody
-  @RequestMapping("/GetPersonByNameAgeIndexed")
-  public Person getPersonByNameAgeIndexed(@RequestParam String name, @RequestParam Integer age) {
-    Person person = personRepository.getPersonByNameAgeIndexed(name, age);
+  @RequestMapping("/SelectPersonByNameAgeIndexed")
+  public Person selectPersonByNameAgeIndexed(@RequestParam String name, @RequestParam Integer age) {
+    Person person = personRepository.selectPersonByNameAgeIndexed(name, age);
     return person;
   }
 
   //================================================================
-  // GET PERSON BY NAME AGE NAMED
+  // SELECT PERSON BY NAME AGE NAMED
   //================================================================
   @ResponseBody
-  @RequestMapping("/GetPersonByNameAgeNamed")
-  public Person getPersonByNameAgeNamed(@RequestParam String name, @RequestParam Integer age) {
-    Person person = personRepository.getPersonByNameAgeNamed(name, age);
+  @RequestMapping("/SelectPersonByNameAgeNamed")
+  public Person selectPersonByNameAgeNamed(@RequestParam String name, @RequestParam Integer age) {
+    Person person = personRepository.selectPersonByNameAgeNamed(name, age);
     return person;
   }
 
   //================================================================
-  // GET PERSONS BY NAME
+  // SELECT PERSONS BY NAME
   //================================================================
   @ResponseBody
-  @RequestMapping("/GetPersonsByName")
-  public List<Person> getPersonsByName(@RequestParam String name) {
-    List<Person> persons = personRepository.getPersonsByName(name);
+  @RequestMapping("/SelectPersonsByName")
+  public List<Person> selectPersonsByName(@RequestParam String name) {
+    List<Person> persons = personRepository.selectPersonsByName(name);
     return persons;
   }
 
   //================================================================
-  // GET PERSONS BY NAME SORTED
+  // SELECT PERSONS BY NAME SORTED
   //================================================================
   @ResponseBody
-  @RequestMapping("/GetPersonsByNameSorted")
-  public List<Person> getPersonsByNameSorted(@RequestParam String name) {
-    List<Person> persons = personRepository.getPersonsByNameSorted(name, Sort.by("age"));
+  @RequestMapping("/SelectPersonsByNameSorted")
+  public List<Person> selectPersonsByNameSorted(@RequestParam String name) {
+    List<Person> persons = personRepository.selectPersonsByNameSorted(name, Sort.by("age"));
     return persons;
+  }
+
+  //================================================================
+  // UPDATE PERSON BY NAME
+  //================================================================
+  @ResponseBody
+  @Transactional
+  @RequestMapping("/UpdatePersonsByName")
+  public String updatePersonsByName(@RequestParam String name, @RequestParam Integer newAge) {
+    Integer recordsUpdated = personRepository.updatePersonsByName(name, newAge);
+    return recordsUpdated + " Records were updated";
+  }
+
+  //================================================================
+  // DELETE PERSON BY NAME
+  //================================================================
+  @ResponseBody
+  @Transactional
+  @RequestMapping("/DeletePersonsByName")
+  public String deletePersonsByName(@RequestParam String name) {
+    Integer recordsDeleted = personRepository.deletePersonsByName(name);
+    return recordsDeleted + " Records were deleted";
   }
 
 }
